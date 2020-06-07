@@ -64,22 +64,24 @@ class CNN():
         self.model.add(layers.Dense(8, activation='relu'))
         self.model.add(layers.Dense(1))
         
+        print(self.model.layers[0].input_shape)
         self.model.summary()
+        
         print("done creating model")
         
     def findBestWeights(self, method):
         print("finding best weights")
         
         if(method == "read"):
-            self.model.load_weights("weights.best.hdf5")
+            self.model.load_weights("cnn.best.hdf5")
         
-        optimizer = tf.keras.optimizers.RMSprop(0.001)
+        optimizer = tf.keras.optimizers.Adam()#tf.keras.optimizers.RMSprop(0.01)
         self.model.compile(loss='mse',
                 optimizer=optimizer,
                 metrics=['mae', 'mse'])
         
         if(method == "train"):
-            weights_file="weights.best.hdf5"
+            weights_file="cnn.best.hdf5"
             checkpoint = ModelCheckpoint(weights_file, monitor='val_mae', verbose=1, save_best_only=True, mode='min')
             callbacks_list = [checkpoint]
 

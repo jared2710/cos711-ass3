@@ -1,5 +1,5 @@
 from models.CNN import CNN
-#from models.LSTM import LSTM
+from models.LSTM import LSTM
 from preprocess.DataLoader import DataLoader
 import helpers as h
 
@@ -22,12 +22,14 @@ print(target_array)
 
 
 h.randomShuffleTogether(input_array, target_array)
-train_data, train_labels, test_data, test_labels = h.splitToTrainAndTest(input_array, target_array, 0.01)
+train_data, train_labels, test_data, test_labels = h.splitToTrainAndTest(input_array, target_array, 0.66)
 
 
 
-#method = "train"
-method = "read"
+method = "train"
+#method = "read"
+
+
 
 cnn = CNN()
 cnn.data(train_data, train_labels, test_data, test_labels)
@@ -38,8 +40,11 @@ cnn.testModel()
 
 
 
-#lstm = LSTM()
-#lstm.print()
+lstm = LSTM()
+lstm.data(train_data, train_labels, test_data, test_labels)
+lstm.createModel()
+lstm.findBestWeights(method)
+lstm.testModel()
 
 #(train_images, train_labels), (test_images, test_labels) = datasets.cifar10.load_data()
 #print(train_images)
