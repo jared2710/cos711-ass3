@@ -34,9 +34,6 @@ class LSTM():
         print("creating model")
         self.model = models.Sequential()
         
-        print(self.num_hourly_per_element)
-        print(self.num_values_per_hour)
-        
         self.model.add(
             layers.LSTM(32, input_shape=(self.num_hourly_per_element, self.num_values_per_hour))
         )

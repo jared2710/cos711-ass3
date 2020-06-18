@@ -34,9 +34,6 @@ class CNN():
         print("creating model")
         self.model = models.Sequential()
         
-        print(self.num_hourly_per_element)
-        print(self.num_values_per_hour)
-        
         
         self.model.add(
             layers.Conv1D(8, (3), activation='relu', input_shape=(self.num_hourly_per_element, self.num_values_per_hour))

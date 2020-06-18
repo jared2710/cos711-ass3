@@ -17,6 +17,7 @@ method = "preprocessed"
 dataLoader = DataLoader(method)
 (input_array, target_array) = dataLoader.load()
 print(input_array)
+print(len(input_array))
 print(target_array)
 
 
@@ -39,7 +40,7 @@ cnn.testModel()
 
 print()
 
-#method = "train"
+method = "train"
 #method = "read"
 
 
