@@ -26,8 +26,8 @@ train_data, train_labels, test_data, test_labels = h.splitToTrainAndTest(input_a
 
 
 
-method = "train"
-#method = "read"
+#method = "train"
+method = "read"
 
 
 
@@ -37,7 +37,10 @@ cnn.createModel()
 cnn.findBestWeights(method)
 cnn.testModel()
 
+print()
 
+#method = "train"
+#method = "read"
 
 
 lstm = LSTM()

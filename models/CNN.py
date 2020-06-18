@@ -34,6 +34,10 @@ class CNN():
         print("creating model")
         self.model = models.Sequential()
         
+        print(self.num_hourly_per_element)
+        print(self.num_values_per_hour)
+        
+        
         self.model.add(
             layers.Conv1D(8, (3), activation='relu', input_shape=(self.num_hourly_per_element, self.num_values_per_hour))
         )
@@ -50,14 +54,6 @@ class CNN():
             layers.Conv1D(16, (3), activation='relu')
         )
         
-        #self.model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(32, 32, 3)))
-        #self.model.add(layers.MaxPooling2D((2, 2)))
-        #self.model.add(layers.Conv2D(64, (3, 3), activation='relu'))
-        #self.model.add(layers.MaxPooling2D((2, 2)))
-        #self.model.add(layers.Conv2D(64, (3, 3), activation='relu'))
-        #self.model.add(layers.Flatten())
-        #self.model.add(layers.Dense(64, activation='relu'))
-        #self.model.add(layers.Dense(10))
         
         self.model.add(layers.Flatten())
         self.model.add(layers.Dense(16, activation='relu'))
@@ -75,7 +71,7 @@ class CNN():
         if(method == "read"):
             self.model.load_weights("cnn.best.hdf5")
         
-        optimizer = tf.keras.optimizers.Adam()#tf.keras.optimizers.RMSprop(0.01)
+        optimizer = tf.keras.optimizers.Adam(0.001)#tf.keras.optimizers.RMSprop(0.01)
         self.model.compile(loss='mse',
                 optimizer=optimizer,
                 metrics=['mae', 'mse'])
@@ -86,7 +82,7 @@ class CNN():
             callbacks_list = [checkpoint]
 
             history = self.model.fit(self.train_inputs, self.train_labels,
-            epochs=30, 
+            epochs=100, 
             #validation_split=0.33,
             validation_data=(self.test_inputs, self.test_labels),
             callbacks=callbacks_list)

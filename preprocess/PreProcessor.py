@@ -52,7 +52,7 @@ class PreProcessor():
         self.dataset_column_names_input = self.dataset_column_names[2:8]
         self.len_dataset_column_names_input = len(self.dataset_column_names_input)
         
-        self.dataset_array = np.empty([len(self.dataset),121,(self.len_dataset_column_names_input+self.len_sensor_column_names_input)])
+        self.dataset_array = np.empty([len(self.dataset),121,(self.len_dataset_column_names_input+self.len_sensor_column_names_input+1)])
         
         
     def convertCSVReadToNumpy(self):
@@ -72,6 +72,7 @@ class PreProcessor():
             
             value_arr = [[]] * self.len_dataset_column_names_input
             
+            count = 0
             for j in range(self.len_dataset_column_names_input):
                 column_name = self.dataset_column_names_input[j]
                 csv = self.dataset.iloc[i][column_name]
@@ -83,8 +84,17 @@ class PreProcessor():
                 #print(value_arr[j])
                 value_arr[j] = value_arr[j].astype(np.float)
                 #print(value_arr[j])
+                #print("nan")
+                #print(np.isnan(value_arr[j]))
+                #print(True in np.isnan(value_arr[j]))
+                
+                if(True in np.isnan(value_arr[j])):
+                    count += 1
+                
                 value_arr[j][np.isnan(value_arr[j])] = np.nanmean(value_arr[j])
+                #value_arr[j][np.isnan(value_arr[j])] = 0
                 #print(value_arr[j])
+            #print("numWithNan", count)
                 
                 
                 
@@ -93,14 +103,18 @@ class PreProcessor():
             num_hours = len(value_arr[0])
             
             for j in range(num_hours):
-            
+                #print(self.dataset_array[i][j])
                 for k in range(self.len_dataset_column_names_input):
                     self.dataset_array[i][j][k] = value_arr[k][j]#(0.0 if value_arr[k][j] == "nan" else value_arr[k][j])
+                #print(self.dataset_array[i][j])
                     
                 for k in range(self.len_sensor_column_names_input):
                     self.dataset_array[i][j][self.len_dataset_column_names_input + k] = this_sensor[self.sensor_column_names_input[k]]
-                    
-                #print(dataset_array[i][j])
+                #print(self.dataset_array[i][j])
+                
+                self.dataset_array[i][j][self.len_dataset_column_names_input + self.len_sensor_column_names_input] = 6-count
+                
+                #print(self.dataset_array[i][j])
                 
     def normalizeNumpyArray(self):
         for k in range(len(self.dataset_array[0][0])):
@@ -118,6 +132,7 @@ class PreProcessor():
             for j in range(len(self.dataset_array[0])):
                 for i in range(len(self.dataset_array)):
                     self.dataset_array[i][j][k] = (self.dataset_array[i][j][k]-min)/(diff)
+                    #print(self.dataset_array[i][j][k])
                 
     def saveToFile(self):
         np.save('data/dataset_array', self.dataset_array)

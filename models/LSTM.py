@@ -34,12 +34,15 @@ class LSTM():
         print("creating model")
         self.model = models.Sequential()
         
+        print(self.num_hourly_per_element)
+        print(self.num_values_per_hour)
+        
         self.model.add(
             layers.LSTM(32, input_shape=(self.num_hourly_per_element, self.num_values_per_hour))
         )
         
         #self.model.add(layers.Flatten())
-        #self.model.add(layers.Dense(16, activation='relu'))
+        self.model.add(layers.Dense(32, activation='relu'))
         self.model.add(layers.Dense(8, activation='relu'))
         self.model.add(layers.Dense(1))
         
@@ -54,7 +57,7 @@ class LSTM():
         if(method == "read"):
             self.model.load_weights("lstm.best.hdf5")
         
-        optimizer = tf.keras.optimizers.Adam()#tf.keras.optimizers.RMSprop(0.01)
+        optimizer = tf.keras.optimizers.Adam(0.001)#tf.keras.optimizers.RMSprop(0.01)
         self.model.compile(loss='mse',
                 optimizer=optimizer,
                 metrics=['mae', 'mse'])
@@ -65,7 +68,7 @@ class LSTM():
             callbacks_list = [checkpoint]
 
             history = self.model.fit(self.train_inputs, self.train_labels,
-            epochs=30, 
+            epochs=100, 
             #validation_split=0.33,
             validation_data=(self.test_inputs, self.test_labels),
             callbacks=callbacks_list)
