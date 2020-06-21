@@ -54,7 +54,7 @@ class LSTM():
         if(method == "read"):
             self.model.load_weights("lstm.best.hdf5")
         
-        optimizer = tf.keras.optimizers.Adam(0.001)#tf.keras.optimizers.RMSprop(0.01)
+        optimizer = tf.keras.optimizers.Adam(0.001)
         self.model.compile(loss='mse',
                 optimizer=optimizer,
                 metrics=['mae', 'mse'])

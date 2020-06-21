@@ -62,9 +62,13 @@ class PreProcessor():
             self.target_array[i][0] = self.target_array_old[i]
         self.target_array_old = []
         
+        #empty_counts = [[0] * self.len_dataset_column_names_input for i in range(len(self.dataset))]
+        #empty_firsts = [[0] * self.len_dataset_column_names_input for i in range(len(self.dataset))]
+        #empty_lasts = [[0] * self.len_dataset_column_names_input for i in range(len(self.dataset))]
+        
         for i in range(len(self.dataset)):
             print(i)
-            #print(dataset.iloc[i])
+            #print(self.dataset.iloc[i])
             #print(dataset_array[i])
            
             this_sensor = self.sensor_arr[self.dataset.iloc[i]['location']]
@@ -74,6 +78,7 @@ class PreProcessor():
             
             count = 0
             for j in range(self.len_dataset_column_names_input):
+                #print("j", j)
                 column_name = self.dataset_column_names_input[j]
                 csv = self.dataset.iloc[i][column_name]
                 #csv = csv.replace("nan", "0.0")
@@ -85,7 +90,17 @@ class PreProcessor():
                 value_arr[j] = value_arr[j].astype(np.float)
                 #print(value_arr[j])
                 #print("nan")
-                #print(np.isnan(value_arr[j]))
+                #print((np.isnan(value_arr[j]) == True).sum()) for count
+                #where = np.where(np.isnan(value_arr[j]) == True)[0]
+                #print(where)
+                #if(len(where) > 0):
+                    #print(where[0])
+                    #print(where[len(where)-1])
+                    #empty_firsts[i][j] = where[0]
+                    #empty_lasts[i][j] = where[len(where)-1]
+                #else:
+                    #empty_firsts[i][j] = -1
+                    #empty_lasts[i][j] = -1
                 #print(True in np.isnan(value_arr[j]))
                 
                 if(True in np.isnan(value_arr[j])):
@@ -115,6 +130,13 @@ class PreProcessor():
                 self.dataset_array[i][j][self.len_dataset_column_names_input + self.len_sensor_column_names_input] = 6-count
                 
                 #print(self.dataset_array[i][j])
+        #print(empty_counts)
+        #print(empty_firsts)
+        #print(empty_lasts)
+        #np.save('empty_counts', empty_counts)
+        #np.save('empty_firsts', empty_firsts)
+        #np.save('empty_lasts', empty_lasts)
+        
                 
     def normalizeNumpyArray(self):
         for k in range(len(self.dataset_array[0][0])):

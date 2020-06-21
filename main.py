@@ -40,8 +40,8 @@ cnn.testModel()
 
 print()
 
-method = "train"
-#method = "read"
+#method = "train"
+method = "read"
 
 
 lstm = LSTM()
@@ -50,17 +50,6 @@ lstm.createModel()
 lstm.findBestWeights(method)
 lstm.testModel()
 
-#(train_images, train_labels), (test_images, test_labels) = datasets.cifar10.load_data()
-#print(train_images)
-#print(train_labels)
-#print(train_images.shape)
-#print(train_images.head())
-
-# Normalize pixel values to be between 0 and 1
-#train_images, test_images = train_images / 255.0, test_images / 255.0
-
-
-                    
                     
 
 
